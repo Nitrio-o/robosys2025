@@ -2,10 +2,10 @@
 
 
 ---
-# plusコマンド 
+# mean コマンド
 ![test](https://github.com/Nitrio-o/robosys2025/actions/workflows/test.yml/badge.svg)
 
-標準入力から読み込んだ数字を足します。
+このコマンドは、標準入力から読み込んだ数値の平均値を出力します。
 
 ## 必要なソフトウェア 
 - Python 3.7〜3.10（テスト済）
