@@ -28,7 +28,7 @@ seq 5 | ./mean
 - 本ソフトウェアパッケージは、3条項BSDライセンスの下、再頒布および使用が許可されます。
 - 本パッケージのコードは、下記の講義スライド資料のものを参考にしています。
 - ロボットシステム学 講義資料
- -（Creative Commons Attribution-ShareAlike 4.0 International License）by Ryuichi Ueda
- - https://github.com/ryuichiueda/my_slides/tree/master/robosys_2025
+-（Creative Commons Attribution-ShareAlike 4.0 International License）by Ryuichi Ueda
+- https://github.com/ryuichiueda/my_slides/tree/master/robosys_2025
 
 - © 2025 Ryusei Abe
