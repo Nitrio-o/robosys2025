@@ -1,34 +1,60 @@
-ロボットシステム学課題１
+# tsdiff
 
+標準入力から「行頭がタイムスタンプ（秒）」のログを読み取り、直前行からの差分時間 Δt（秒）を付けて標準出力へ出力するフィルタコマンドです。
 
----
-# mean コマンド
-![test](https://github.com/Nitrio-o/robosys2025/actions/workflows/test.yml/badge.svg)
+## 何ができるか
 
-このコマンドは、標準入力から読み込んだ数値の平均値を出力します。  
-標準入力（パイプ）から数値データを受け取り、標準出力に結果を出力するフィルタ型コマンドです。
+- ログの「イベント間隔（遅延）」を見やすくする
+- センサ周期や処理の詰まり（間隔が伸びる箇所）を見つける
 
 ## 使い方
 
+入力は 1行1レコードで、各行の先頭が数値（例: `0`, `1.5`）である必要があります。空行は無視します。
+
 ```bash
-seq 5 | ./mean
-```
+$ printf "0 a\n1 b\n3 c\n" | ./tsdiff
+00 a
+11 b
+23 c
+出力の1列目が Δt（直前との差分秒）、2列目以降が元の行です。
 
-出力例：
-3.0
+パイプで自由に接続できる理由
 
-## 必要なソフトウェア 
-- Python 3.7〜3.10（テスト済）
+tsdiff は標準入力（stdin）からデータを受け取り、標準出力（stdout）に結果を出すだけの「フィルタ」として設計しています。
+そのため、前後を固定せずに既存コマンドと |（パイプ）で接続できます。
 
-## テスト環境 
-- Ubuntu 24.04 LTS
-- GitHub Actions による自動テストを実施
+# ファイルを流し込む
+$ cat log.txt | ./tsdiff
 
-## ライセンスおよび著作権表示 
-- 本ソフトウェアパッケージは、3条項BSDライセンスの下、再頒布および使用が許可されます。
-- 本パッケージのコードは、下記の講義スライド資料のものを参考にしています。
-- ロボットシステム学 講義資料
--（Creative Commons Attribution-ShareAlike 4.0 International License）by Ryuichi Ueda
-- https://github.com/ryuichiueda/my_slides/tree/master/robosys_2025
+# Δtが1秒を超える行だけ抽出する（後段に任せる）
+$ cat log.txt | ./tsdiff | awk '$1 > 1.0'
 
-- © 2025 Ryusei Abe
+# 生成したデータにもそのまま使える
+$ seq 5 | awk '{print $1, "event"}' | ./tsdiff
+
+エラー時の挙動
+
+入力が空（空行のみ）: 標準エラー出力に no input、終了ステータス 1
+
+行頭が数値でない行がある: 標準エラー出力にエラー内容、終了ステータス 1
+
+正常終了: 終了ステータス 0
+
+※ エラーメッセージは標準エラー出力に出すため、パイプ処理のデータ（標準出力）を汚しません。
+
+必要なソフトウェア
+
+Python 3
+
+テスト
+$ ./test.bash
+OK
+
+
+GitHub Actions でも push をトリガにテストが実行されます。
+
+ライセンス
+
+BSD 3-Clause License（SPDX-License-Identifier: BSD-3-Clause）
+
+© 2026 Ryusei Abe
