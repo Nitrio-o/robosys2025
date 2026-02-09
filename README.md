@@ -67,7 +67,7 @@ $ printf "0 a\n1 b\n3 c\n" | ./tsdiff
 ## 動作環境
 
 - Ubuntu 24.04 LTS
-- Python 3.7–3.10
+- Python 3.8–3.10
 
 ## テスト
 
