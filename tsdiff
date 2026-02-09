@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Ryusei Abe
+# SPDX-License-Identifier: BSD-3-Clause
+
+import sys
+
+
+def eprint(msg: str) -> None:
+    sys.stderr.write(msg + "\n")
+
+
+def fmt_g(x: float) -> str:
+    return "{:g}".format(x)
+
+
+def main() -> int:
+    prev = None
+    lineno = 0
+    wrote = False
+
+    for raw in sys.stdin:
+        lineno += 1
+        line = raw.rstrip("\n")
+        if line.strip() == "":
+            continue
+
+        parts = line.split(None, 1)
+        try:
+            ts = float(parts[0])
+        except ValueError:
+            eprint(f"invalid timestamp at line {lineno}")
+            return 1
+
+        delta = 0.0 if prev is None else (ts - prev)
+        prev = ts
+
+        sys.stdout.write(f"{fmt_g(delta)}\t{line}\n")
+        wrote = True
+
+    if not wrote:
+        eprint("no input")
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
