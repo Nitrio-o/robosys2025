@@ -1,4 +1,4 @@
-# tsdiff
+# tsdiffコマンド
 
 ![test](https://github.com/Nitrio-o/robosys2025/actions/workflows/test.yml/badge.svg)
 
